@@ -3,4 +3,6 @@
 											  "special_keys.cpp"
 											  "controller.cpp"
 											   "board.cpp"
-											   "king.cpp")
+											   "king.cpp"
+											   "mage.cpp"
+											   "warrior.cpp")

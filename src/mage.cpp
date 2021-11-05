@@ -1,16 +1,5 @@
-#include <iostream>
-#include <algorithm>
-#include <cmath>
-#include <cstdlib>
-#include <fstream>
-#include <cctype>
-#include <stdio.h>
-#include <string.h>
-#include <cstring>
+#include "mage.h"
 
-#include "king.h"
-#include "special_keys.h"
-#include "board.h"
 //-------------using section-------------------
 
 //-------------const section-------------------

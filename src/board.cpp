@@ -27,6 +27,7 @@ using std::ofstream;
 //-------------------------------------------------------------
 //-------------------------------------------------------------
 Board::Board(const char* file_name)
+	:m_player_on_key{false}
 {
 	ifstream in;
 	in.open(file_name);
@@ -75,8 +76,7 @@ Board::Board(const char* file_name)
 	}
 	m_board[row][col] = '\0';
 
-	m_lenght_row = row ;
-	
+	m_length_row = row ;
 }
 //--------------------------------------------------------------
 void Board::print_board(char player, int counter, int key)
@@ -85,7 +85,7 @@ void Board::print_board(char player, int counter, int key)
 	cout << "The amount of steps: " << counter << endl;
 	cout << "The thief has: " << key << " keys" << endl;
 	cout << endl;
-	for (int row = 0; row < m_lenght_row; row++)
+	for (int row = 0; row < m_length_row; row++)
 	{
 		for (int col = 0; m_board[row][col]!='\0'; col++)
 		{
@@ -99,35 +99,104 @@ void Board::initialize_members(char c,const int row, const int col)
 {
 	switch (c)
 	{
-	case 'k': m_king.set_cordinate(row, col); 
-		break;
-	
+	case 'k': m_king.set_cordinate(row, col); break;
+	case 'm': m_mage.set_cordinate(row, col); break;
+	case 'w': m_warrior.set_cordinate(row, col); break;
 	}
 }
 //-------------------------------------------------------------------
 bool Board::move_player(char player, bool &victory)
 {
-	int row = 0, col = 0, old_row = 0, old_col = 0;
+	int new_row = 0, new_col = 0, 
+		old_row = 0, old_col = 0;
 	switch (player)
 	{
 	case 'k':
 		
-		old_row = row = m_king.get_row(); 
-		old_col = col = m_king.get_col();
+		old_row = new_row = m_king.get_row(); 
+		old_col = new_col = m_king.get_col();
 		
-		m_controller.move(row, col);
-		m_controller.check_valid_king(row, col, this);
+		m_controller.move(new_row, new_col);
+		m_controller.check_valid_king(new_row, new_col, this);
 		
 		if (!m_controller.get_valid_movement())
 			return false;
 		
-		if (m_controller.check_win(this, row, col))
+		if (m_controller.check_win(this, new_row, new_col))
+		{
 			victory = true;
-		m_king.set_cordinate(row, col);
-		m_board[old_row][old_col] = '_';
-		m_board[m_king.get_row()][m_king.get_col()] = 'k';
+			return true;
+		}
+		
+		m_king.set_cordinate(new_row, new_col);
+		
+		if (m_player_on_key[king])
+		{
+			m_board[old_row][old_col] = 'F';
+			m_player_on_key[king] = false;
+		}
+		else
+			m_board[old_row][old_col] = '_';
+
+		if (m_board[new_row][new_col] == 'F')
+			m_player_on_key[king] = true;
+		
+		m_board[new_row][new_col] = 'k';
+		return true;
+	
+	case 'm':
+		old_row = new_row = m_mage.get_row();
+		old_col = new_col = m_mage.get_col();
+
+		m_controller.move(new_row, new_col);
+		m_controller.check_valid_mage(new_row, new_col, this);
+
+		if (!m_controller.get_valid_movement())
+			return false;
+		
+		m_mage.set_cordinate(new_row, new_col);
+		
+		if (m_player_on_key[mage])
+		{
+			m_board[old_row][old_col] = 'F';
+			m_player_on_key[mage] = false;
+		}
+		else
+			m_board[old_row][old_col] = '_';
+
+		if (m_board[new_row][new_col] == 'F')
+			m_player_on_key[mage] = true;
+
+		m_board[new_row][new_col] = 'm';
+		return true;
+	
+	case 'w':
+		old_row = new_row = m_warrior.get_row();
+		old_col = new_col = m_warrior.get_col();
+
+		m_controller.move(new_row, new_col);
+		m_controller.check_valid_warrior(new_row, new_col, this);
+
+		if (!m_controller.get_valid_movement())
+			return false;
+
+		m_warrior.set_cordinate(new_row, new_col);
+		
+		if (m_player_on_key[warrior])
+		{
+			m_board[old_row][old_col] = 'F';
+			m_player_on_key[warrior] = false;
+		}
+		else
+			m_board[old_row][old_col] = '_';
+
+		if (m_board[new_row][new_col] == 'F')
+			m_player_on_key[warrior] = true;
+
+		m_board[new_row][new_col] = 'w';
 		return true;
 	}
+
 }
 //-------------------------------------------------------------------
 bool Board::check_valid_player(const char player) const
@@ -144,7 +213,7 @@ char Board::get_cell(int row, int col) const
 //-------------------------------------------------------------------
 int Board::get_row_board() const
 {
-	return m_lenght_row;
+	return m_length_row;
 }
 //-------------------------------------------------------------------
 int Board::get_col_board() const

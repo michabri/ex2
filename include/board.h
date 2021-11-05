@@ -1,12 +1,13 @@
 #pragma once
 #include "special_keys.h"
 #include "King.h"
+#include "mage.h"
+#include "warrior.h"
 #include "Controller.h"
 //-------------const section-------------------
 const int LENGTH = 50;
 
 //------------class declaration-----------------
-//class King;
 
 class Board 
 {
@@ -22,8 +23,12 @@ public:
 	int get_col_board() const;
 private:
 	char m_board[LENGTH][LENGTH] ;
-	int m_lenght_row;
+	int m_length_row;
 	int m_length_col;
+	bool m_player_on_key[4]; // 0 - king, 1 - mage, 2 - warrior, 3 - thief
+	bool m_player_on_teleport[4];
 	King m_king;
+	Mage m_mage;
+	Warrior m_warrior;
 	Controller m_controller;
 };

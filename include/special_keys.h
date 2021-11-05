@@ -6,6 +6,10 @@ enum Keys
 {
     KB_Escape = 27,
     SpecialKey = 224,
+    king = 0,
+    mage = 1,
+    warrior = 2,
+    thief = 3,
 };
 
 enum SpecialKeys

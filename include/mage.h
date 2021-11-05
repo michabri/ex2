@@ -1,9 +1,4 @@
 #pragma once
-#pragma once
-#include <conio.h>
-#include "io.h"
-#include "special_keys.h"
-class Board;
 
 class Mage {
 public:
