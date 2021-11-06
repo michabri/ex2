@@ -19,6 +19,7 @@ using std::cerr;
 using std::cout;
 using std::endl;
 using std::cin;
+using std::nothrow;
 using std::ifstream;
 using std::ofstream;
 
@@ -27,7 +28,8 @@ using std::ofstream;
 //-------------------------------------------------------------
 //-------------------------------------------------------------
 Board::Board(const char* file_name)
-	:m_player_on_key{ false }, m_key_counter{0}
+	:m_player_on_key{ false }, m_player_on_teleport{false}, 
+	m_key_counter(0), m_length_row(0), m_length_col(0)
 {
 	
 	ifstream in;
@@ -96,14 +98,14 @@ void Board::print_board(char player, int counter, int key)
 	}
 }
 //-------------------------------------------------------------------
-void Board::initialize_members(char c,const int row, const int col)
+void Board::initialize_members(char c, const int row, const int col)
 {
 	switch (c)
 	{
-	case 'k': m_king.set_cordinate(row, col); break;
-	case 'm': m_mage.set_cordinate(row, col); break;
-	case 'w': m_warrior.set_cordinate(row, col); break;
-	case 't': m_thief.set_cordinate(row, col); break;
+	case 'k': m_king.set_coordinate(row, col); break;
+	case 'm': m_mage.set_coordinate(row, col); break;
+	case 'w': m_warrior.set_coordinate(row, col); break;
+	case 't': m_thief.set_coordinate(row, col); break;	
 	}
 }
 //-------------------------------------------------------------------
@@ -130,18 +132,29 @@ bool Board::move_player(char player, bool &victory)
 			return true;
 		}
 		
-		m_king.set_cordinate(new_row, new_col);
+		m_king.set_coordinate(new_row, new_col);
 		
 		if (m_player_on_key[king])
 		{
 			m_board[old_row][old_col] = 'F';
 			m_player_on_key[king] = false;
 		}
+		else if (m_player_on_teleport[king])
+		{
+			m_board[old_row][old_col] = 'X';
+			m_player_on_teleport[king] = false;
+		}
 		else
 			m_board[old_row][old_col] = '_';
 
 		if (m_board[new_row][new_col] == 'F')
 			m_player_on_key[king] = true;
+		else if (m_board[new_row][new_col] == 'X')
+		{
+			m_player_on_teleport[king] = true;
+			m_controller.find_next_teleport(this, new_row, new_col);
+			m_king.set_coordinate(new_row, new_col);
+		}
 		
 		m_board[new_row][new_col] = 'k';
 		return true;
@@ -156,18 +169,25 @@ bool Board::move_player(char player, bool &victory)
 		if (!m_controller.get_valid_movement())
 			return false;
 		
-		m_mage.set_cordinate(new_row, new_col);
+		m_mage.set_coordinate(new_row, new_col);
 		
 		if (m_player_on_key[mage])
 		{
 			m_board[old_row][old_col] = 'F';
 			m_player_on_key[mage] = false;
 		}
+		else if (m_player_on_teleport[mage])
+		{
+			m_board[old_row][old_col] = 'X';
+			m_player_on_teleport[mage] = false;
+		}
 		else
 			m_board[old_row][old_col] = '_';
 
 		if (m_board[new_row][new_col] == 'F')
 			m_player_on_key[mage] = true;
+		else if (m_board[new_row][new_col] == 'X')
+			m_player_on_teleport[mage] = true;
 
 		m_board[new_row][new_col] = 'm';
 		return true;
@@ -182,19 +202,29 @@ bool Board::move_player(char player, bool &victory)
 		if (!m_controller.get_valid_movement())
 			return false;
 
-		m_warrior.set_cordinate(new_row, new_col);
+		m_warrior.set_coordinate(new_row, new_col);
 		
 		if (m_player_on_key[warrior])
 		{
 			m_board[old_row][old_col] = 'F';
 			m_player_on_key[warrior] = false;
 		}
+		else if (m_player_on_teleport[warrior])
+		{
+			m_board[old_row][old_col] = 'X';
+			m_player_on_teleport[warrior] = false;
+		}
 		else
 			m_board[old_row][old_col] = '_';
 
 		if (m_board[new_row][new_col] == 'F' || m_board[new_row][new_col] == '!')
 			m_player_on_key[warrior] = true;
-
+		else if (m_board[new_row][new_col] == 'X')
+		{
+			m_player_on_teleport[warrior] = true;
+			m_controller.find_next_teleport(this, new_row, new_col);
+			m_warrior.set_coordinate(new_row, new_col);
+		}
 		m_board[new_row][new_col] = 'w';
 		return true;
 
@@ -208,19 +238,27 @@ bool Board::move_player(char player, bool &victory)
 		if (!m_controller.get_valid_movement())
 			return false;
 
-		m_thief.set_cordinate(new_row, new_col);
+		m_thief.set_coordinate(new_row, new_col);
 
-		m_board[old_row][old_col] = '_';
+		if (m_player_on_teleport[thief])
+		{
+			m_board[old_row][old_col] = 'X';
+			m_player_on_teleport[thief] = false;
+		}
+		else
+			m_board[old_row][old_col] = '_';
 
+		
 		if (m_board[new_row][new_col] == 'F')
-		{
 			inc_key_counter();
-		}
-		if (m_board[new_row][new_col] == '#' && get_key_counter() > 0)
-		{
+		else if (m_board[new_row][new_col] == '#' && get_key_counter() > 0)
 			dec_key_counter();
+		else if (m_board[new_row][new_col] == 'X')
+		{
+			m_player_on_teleport[thief] = true;
+			m_controller.find_next_teleport(this, new_row, new_col);
+			m_thief.set_coordinate(new_row, new_col);
 		}
-
 		m_board[new_row][new_col] = 't';
 		return true;
 	}
@@ -250,22 +288,29 @@ int Board::get_col_board() const
 }
 
 //-------------------------------------------------------------------
-
 void Board::inc_key_counter()
 {
 	m_key_counter++;
 }
 
 //-------------------------------------------------------------------
-
 void Board::dec_key_counter()
 {
 	m_key_counter--;
 }
 
 //-------------------------------------------------------------------
-
 int Board::get_key_counter() const
 {
 	return m_key_counter;
+}
+
+//-------------------------------------------------------------------
+void Board::print_victory() const
+{
+	cout << "*       * ***** ***** ***** ***** ***** *   * " << endl;
+	cout << " *     *    *   *       *   *   * *   *  * *"  << endl;
+	cout << "  *   *     *   *       *   *   * *****   *" << endl;
+	cout << "   * *      *   *       *   *   * * *     *" << endl;
+	cout << "    *     ***** *****   *   ***** *   *   *" << endl;
 }

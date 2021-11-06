@@ -25,6 +25,7 @@ public:
 	void inc_key_counter();
 	void dec_key_counter();
 	int get_key_counter() const;
+	void print_victory() const;
 private:
 	char m_board[LENGTH][LENGTH] ;
 	int m_length_row;

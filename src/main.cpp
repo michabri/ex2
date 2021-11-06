@@ -57,6 +57,6 @@ int main()
     }
     if (victory)
     {
-        std::cout << "VICTORY!!!" << std::endl;
+        board.print_victory();
     }
 }

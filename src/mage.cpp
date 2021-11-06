@@ -9,7 +9,7 @@ Mage::Mage()
 	:m_row(0), m_col(0)
 {}
 //-------------------------------------------------------------
-void Mage::set_cordinate(const int row, const int col)
+void Mage::set_coordinate(const int row, const int col)
 {
 	m_row = row;
 	m_col = col;

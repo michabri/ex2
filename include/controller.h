@@ -1,6 +1,5 @@
 #pragma once
 class Board;
-class King;
 
 class Controller {
 public:
@@ -12,7 +11,7 @@ public:
 	void move(int& row, int& col) const;
 	bool get_valid_movement() const;
 	bool check_win(const Board* board, const int row, const int col) const;
-
+	void find_next_teleport(const Board* board, int &row, int &col) const;
 private:
 	bool m_valid_movement;
 };

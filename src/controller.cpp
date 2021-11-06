@@ -37,19 +37,6 @@ void Controller::check_valid_king(int row, int col, const Board* board)
 }
 
 //---------------------------------------------------------
-void Controller::check_valid_thief(int row, int col, const Board* board)
-{
-	if (row < board->get_row_board() && row >= 0 &&
-		col <= board->get_col_board() && col >= 0 &&
-		(board->get_cell(row, col) == '_' || board->get_cell(row, col) == 'F' ||
-			 board->get_cell(row, col) == 'X' || 
-			(board->get_cell(row, col) == '#' && board->get_key_counter() > 0)))
-		m_valid_movement = true;
-	else
-		m_valid_movement = false;
-}
-
-//---------------------------------------------------------
 void Controller::check_valid_mage(int row, int col, const Board* board)
 {
 	if (row < board->get_row_board() && row >= 0 &&
@@ -73,6 +60,18 @@ void Controller::check_valid_warrior(int row, int col, const Board* board)
 		m_valid_movement = false;
 }
 
+//---------------------------------------------------------
+void Controller::check_valid_thief(int row, int col, const Board* board)
+{
+	if (row < board->get_row_board() && row >= 0 &&
+		col <= board->get_col_board() && col >= 0 &&
+		(board->get_cell(row, col) == '_' || board->get_cell(row, col) == 'F' ||
+			board->get_cell(row, col) == 'X' ||
+			(board->get_cell(row, col) == '#' && board->get_key_counter() > 0)))
+		m_valid_movement = true;
+	else
+		m_valid_movement = false;
+}
 //-------------------------------------------------------------
 void Controller::move(int &row, int &col) const
 {
@@ -104,4 +103,35 @@ bool Controller::check_win(const Board* board, const int row, const int col) con
 	if (board->get_cell(row, col) == '@')
 		return true;
 	return false;
+}
+//-------------------------------------------------------------
+void Controller::find_next_teleport(const Board* board, int &row, int &col) const
+{
+	bool found_teleport = false;
+	bool start = false;
+	col++;
+	while (!found_teleport)
+	{
+		if (start)
+		{
+			row = 0;
+			col = 0;
+		}
+		for(; row < board->get_row_board(); row++)
+		{
+			for (; col < board->get_col_board(); col++)
+			{
+				if (board->get_cell(row, col) == 'X')
+				{
+					found_teleport = true;
+					break;
+				}
+			}
+			if (found_teleport)
+				break;
+			col = 0;
+		}
+		if (row == board->get_row_board())
+			start = true;
+	}
 }

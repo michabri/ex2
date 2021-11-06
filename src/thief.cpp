@@ -9,7 +9,7 @@ Thief::Thief()
 	:m_row(0), m_col(0)
 {}
 //-------------------------------------------------------------
-void Thief::set_cordinate(const int row, const int col)
+void Thief::set_coordinate(const int row, const int col)
 {
 	m_row = row;
 	m_col = col;
