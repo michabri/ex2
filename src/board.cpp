@@ -27,8 +27,9 @@ using std::ofstream;
 //-------------------------------------------------------------
 //-------------------------------------------------------------
 Board::Board(const char* file_name)
-	:m_player_on_key{false}
+	:m_player_on_key{ false }, m_key_counter{0}
 {
+	
 	ifstream in;
 	in.open(file_name);
 	if (!in.is_open())
@@ -102,6 +103,7 @@ void Board::initialize_members(char c,const int row, const int col)
 	case 'k': m_king.set_cordinate(row, col); break;
 	case 'm': m_mage.set_cordinate(row, col); break;
 	case 'w': m_warrior.set_cordinate(row, col); break;
+	case 't': m_thief.set_cordinate(row, col); break;
 	}
 }
 //-------------------------------------------------------------------
@@ -190,13 +192,39 @@ bool Board::move_player(char player, bool &victory)
 		else
 			m_board[old_row][old_col] = '_';
 
-		if (m_board[new_row][new_col] == 'F')
+		if (m_board[new_row][new_col] == 'F' || m_board[new_row][new_col] == '!')
 			m_player_on_key[warrior] = true;
 
 		m_board[new_row][new_col] = 'w';
 		return true;
-	}
 
+	case 't':
+		old_row = new_row = m_thief.get_row();
+		old_col = new_col = m_thief.get_col();
+
+		m_controller.move(new_row, new_col);
+		m_controller.check_valid_thief(new_row, new_col, this);
+
+		if (!m_controller.get_valid_movement())
+			return false;
+
+		m_thief.set_cordinate(new_row, new_col);
+
+		m_board[old_row][old_col] = '_';
+
+		if (m_board[new_row][new_col] == 'F')
+		{
+			inc_key_counter();
+		}
+		if (m_board[new_row][new_col] == '#' && get_key_counter() > 0)
+		{
+			dec_key_counter();
+		}
+
+		m_board[new_row][new_col] = 't';
+		return true;
+	}
+	
 }
 //-------------------------------------------------------------------
 bool Board::check_valid_player(const char player) const
@@ -219,4 +247,25 @@ int Board::get_row_board() const
 int Board::get_col_board() const
 {
 	return m_length_col;
+}
+
+//-------------------------------------------------------------------
+
+void Board::inc_key_counter()
+{
+	m_key_counter++;
+}
+
+//-------------------------------------------------------------------
+
+void Board::dec_key_counter()
+{
+	m_key_counter--;
+}
+
+//-------------------------------------------------------------------
+
+int Board::get_key_counter() const
+{
+	return m_key_counter;
 }

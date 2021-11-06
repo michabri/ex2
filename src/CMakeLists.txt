@@ -5,4 +5,5 @@
 											   "board.cpp"
 											   "king.cpp"
 											   "mage.cpp"
-											   "warrior.cpp")
+											   "warrior.cpp"
+											   "thief.cpp")

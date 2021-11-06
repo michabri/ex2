@@ -49,7 +49,7 @@ int main()
             }
             if (!victory)
             {
-                board.print_board(player, counter, key);
+                board.print_board(player, counter, board.get_key_counter());
                 input = _getch();
                 std::system("cls");
             }
