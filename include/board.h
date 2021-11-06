@@ -18,7 +18,6 @@ public:
 	void print_board(char palyer, int counter, int key);
 	void initialize_members(char c, const int row, const int col);
 	bool move_player(char player, bool &victory);
-	bool check_valid_player(const char player) const;
 	char get_cell(int row, int col) const;
 	int get_row_board() const;
 	int get_col_board() const;

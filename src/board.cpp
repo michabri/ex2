@@ -19,7 +19,6 @@ using std::cerr;
 using std::cout;
 using std::endl;
 using std::cin;
-using std::nothrow;
 using std::ifstream;
 using std::ofstream;
 
@@ -43,6 +42,7 @@ Board::Board(const char* file_name)
 	int row = 0, col = 0;
 	
 	do {
+		col = 0;
 		do {
 			m_board[row][col] = in.get();
 			if(in.fail())
@@ -67,8 +67,6 @@ Board::Board(const char* file_name)
 		
 		m_board[row][col] = '\0';
 		row++;
-		m_length_col = col - 1;
-		col = 0;
 
 	} while (!(in.eof()) && row < LENGTH);
 	
@@ -79,6 +77,7 @@ Board::Board(const char* file_name)
 	}
 	m_board[row][col] = '\0';
 
+	m_length_col = col+1;
 	m_length_row = row ;
 	in.close();
 }
@@ -265,13 +264,7 @@ bool Board::move_player(char player, bool &victory)
 	}
 	
 }
-//-------------------------------------------------------------------
-bool Board::check_valid_player(const char player) const
-{
-	if (player == 'k' || player == 'm' || player == 't' || player == 'w')
-		return true;
-	return false;
-}
+
 //-------------------------------------------------------------------
 char Board::get_cell(int row, int col) const
 {
