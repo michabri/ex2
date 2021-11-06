@@ -146,7 +146,7 @@ bool Board::move_player(char player, bool &victory)
 			m_player_on_teleport[king] = false;
 		}
 		else
-			m_board[old_row][old_col] = '_';
+			m_board[old_row][old_col] = ' ';
 
 		if (m_board[new_row][new_col] == 'F')
 			m_player_on_key[king] = true;
@@ -183,7 +183,7 @@ bool Board::move_player(char player, bool &victory)
 			m_player_on_teleport[mage] = false;
 		}
 		else
-			m_board[old_row][old_col] = '_';
+			m_board[old_row][old_col] = ' ';
 
 		if (m_board[new_row][new_col] == 'F')
 			m_player_on_key[mage] = true;
@@ -216,7 +216,7 @@ bool Board::move_player(char player, bool &victory)
 			m_player_on_teleport[warrior] = false;
 		}
 		else
-			m_board[old_row][old_col] = '_';
+			m_board[old_row][old_col] = ' ';
 
 		if (m_board[new_row][new_col] == 'F' || m_board[new_row][new_col] == '!')
 			m_player_on_key[warrior] = true;
@@ -247,7 +247,7 @@ bool Board::move_player(char player, bool &victory)
 			m_player_on_teleport[thief] = false;
 		}
 		else
-			m_board[old_row][old_col] = '_';
+			m_board[old_row][old_col] = ' ';
 
 		
 		if (m_board[new_row][new_col] == 'F')
