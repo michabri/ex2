@@ -28,7 +28,7 @@ using std::ofstream;
 //-------------------------------------------------------------
 //-------------------------------------------------------------
 Board::Board(const char* file_name)
-	:m_player_on_key{ false }, m_player_on_teleport{false}, 
+	:m_player_on_key{ false }, m_player_on_teleport{ false }, 
 	m_key_counter(0), m_length_row(0), m_length_col(0)
 {
 	
@@ -80,6 +80,7 @@ Board::Board(const char* file_name)
 	m_board[row][col] = '\0';
 
 	m_length_row = row ;
+	in.close();
 }
 //--------------------------------------------------------------
 void Board::print_board(char player, int counter, int key)
