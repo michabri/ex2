@@ -8,4 +8,5 @@
 											   "warrior.cpp"
 											   "thief.cpp"
 											   "game.cpp"
-											   "checkValid.cpp")
+											   "checkValid.cpp"
+											   "teleport.cpp")

@@ -1,12 +1,14 @@
 #pragma once
+#include <vector>
 #include "checkValid.h"
-
+#include "Teleport.h"
 class Board;
 class King;
 class Mage;
 class Warrior;
 class Thief;
-class CheckValid;
+
+
 
 class Controller {
 public:
@@ -18,7 +20,7 @@ public:
 	bool move_mage(Board* board);
 	bool move_warrior(Board* board);
 	bool move_thief(Board* board);
-	void find_next_teleport(const Board* board, int &row, int &col) const;
+	void find_next_teleport(int& row, int& col) const;
 	bool get_has_key() const;
 private:
 	King m_king;
@@ -26,6 +28,7 @@ private:
 	Warrior m_warrior;
 	Thief m_thief;
 	CheckValid m_check_valid;
+	std::vector <Teleport> m_teleports;
 
 	bool m_player_on_key[4]; // 0 - king, 1 - mage, 2 - warrior, 3 - thief
 	bool m_player_on_teleport[4];

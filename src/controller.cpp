@@ -7,6 +7,7 @@
 #include "mage.h"
 #include "warrior.h"
 #include "thief.h"
+#include "Teleport.h"
 #include "special_keys.h"
 #include "controller.h"
 #include "checkValid.h"
@@ -46,6 +47,7 @@ bool Controller::move_player(Board* board, const char player, bool& victory)
 			return false;
 		return true;
 	}
+	return false;
 }
 
 //-------------------------------------------------------------------
@@ -86,7 +88,7 @@ bool Controller::move_king(Board* board)
 	else if (board->get_cell(new_row, new_col) == 'X')
 	{
 		m_player_on_teleport[king] = true;
-		find_next_teleport(board, new_row, new_col);
+		find_next_teleport(new_row, new_col);
 		m_king.set_coordinate(new_row, new_col);
 	}
 
@@ -165,7 +167,7 @@ bool Controller::move_warrior(Board* board)
 	else if (board->get_cell(new_row, new_col) == 'X')
 	{
 		m_player_on_teleport[warrior] = true;
-		find_next_teleport(board, new_row, new_col);
+		find_next_teleport(new_row, new_col);
 		m_warrior.set_coordinate(new_row, new_col);
 	}
 
@@ -212,7 +214,7 @@ bool Controller::move_thief(Board* board)
 	else if (board->get_cell(new_row, new_col) == 'X')
 	{
 		m_player_on_teleport[thief] = true;
-		find_next_teleport(board, new_row, new_col);
+		find_next_teleport(new_row, new_col);
 		m_thief.set_coordinate(new_row, new_col);
 	}
 
@@ -229,6 +231,9 @@ void Controller::initialize_players(const char c, const int row, const int col)
 	case 'm': m_mage.set_coordinate(row, col); break;
 	case 'w': m_warrior.set_coordinate(row, col); break;
 	case 't': m_thief.set_coordinate(row, col); break;
+	case 'X': 
+		m_teleports.push_back(Teleport(row, col));
+		break;
 	}
 }
 
@@ -253,34 +258,25 @@ void Controller::new_coordinate(int &row, int &col) const
 	}
 }
 //-------------------------------------------------------------
-void Controller::find_next_teleport(const Board* board, int &row, int &col) const
+void Controller::find_next_teleport(int &row, int &col) const
 {
-	bool found_teleport = false;
-	bool start = false;
-	col++;
-	while (!found_teleport)
+	for (int i = 0; i < m_teleports.size(); i++)
 	{
-		if (start)
+		if (m_teleports[i].get_row() == row && m_teleports[i].get_col() == col)
 		{
-			row = 0;
-			col = 0;
-		}
-		for(; row < board->get_row_board(); row++)
-		{
-			for (; col < board->get_col_board(); col++)
+			if (i % 2 == 0)
 			{
-				if (board->get_cell(row, col) == 'X')
-				{
-					found_teleport = true;
-					break;
-				}
-			}
-			if (found_teleport)
+				row = m_teleports[i + 1].get_row();
+				col = m_teleports[i + 1].get_col();
 				break;
-			col = 0;
+			}
+			else
+			{
+				row = m_teleports[i - 1].get_row();
+				col = m_teleports[i - 1].get_col();
+				break;
+			}
 		}
-		if (row == board->get_row_board())
-			start = true;
 	}
 }
 //-------------------------------------------------------------

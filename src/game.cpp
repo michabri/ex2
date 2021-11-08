@@ -7,6 +7,7 @@
 #include <cstring>
 #include <conio.h>
 
+
 #include "io.h"
 #include "board.h"
 #include "controller.h"
@@ -91,7 +92,7 @@ void game()
             print_victory();
             cout << "you passed level " << i + 1 << "! \n";
             cout << "ready for next level?\n" << "press enter\n";
-            enter = _getch();
+            enter =(char) _getch();
         }
     }
     if (!exit)
@@ -111,6 +112,7 @@ char get_player(int index)
     case warrior: return 'w';
     case thief: return 't';
     }
+    return ' ';
 }
 //-------------------------------------------------------------------
 void print_victory()
