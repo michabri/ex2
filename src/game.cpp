@@ -40,7 +40,6 @@ void game()
     Controller controller; // the class that moves the players
     char player , enter;   // player(king, mage, warrior or thief), enter key for moving to the next round
     int counter_moves = 0;       
-    int counter_keys = 0;           
     bool victory = false;
     auto exit = false;
 
@@ -61,7 +60,7 @@ void game()
                 index_player = 0;
             
             std::system("cls");
-            board.print_board(player, counter_moves, counter_keys);
+            board.print_board(player, counter_moves, controller.get_has_key());
 
             auto input = _getch();
             
@@ -80,7 +79,7 @@ void game()
                 }
                 if (!victory)
                 {
-                    board.print_board(player, counter_moves, controller.get_key_counter());
+                    board.print_board(player, counter_moves, controller.get_has_key());
                     input = _getch();
                     
                     std::system("cls");

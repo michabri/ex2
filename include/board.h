@@ -15,7 +15,7 @@ class Board
 public:
 	Board();
 	Board(const char *file_name, Controller *controler);
-	void print_board(char palyer, int counter, int key);
+	void print_board(char player, int counter, bool key);
 	char get_cell(int row, int col) const;
 	void set_cell(const int row, const int col, const char c);
 	int get_row_board() const;

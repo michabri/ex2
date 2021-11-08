@@ -74,11 +74,14 @@ Board::Board(const char* file_name, Controller *controller)
 	in.close();
 }
 //--------------------------------------------------------------
-void Board::print_board(char player, int counter, int key)
+void Board::print_board(char player, int counter, bool key)
 {
 	cout << "The palyer is: " << player << endl;
 	cout << "The amount of steps: " << counter << endl;
-	cout << "The thief has: " << key << " keys" << endl;
+	if (key)
+		cout << "The thief has a key" << endl;
+	else
+		cout << "The thief doesnt have a key" << endl;
 	cout << endl;
 	for (int row = 0; row < m_length_row; row++)
 	{

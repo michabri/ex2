@@ -45,13 +45,13 @@ bool CheckValid::check_valid_warrior(const int row, const int col, const Board* 
 }
 
 //---------------------------------------------------------
-bool CheckValid::check_valid_thief(const int row, const int col, const Board* board, const int keys) const
+bool CheckValid::check_valid_thief(const int row, const int col, const Board* board, const bool has_key) const
 {
 	if (row < board->get_row_board() && row >= 0 &&
 		col <= board->get_col_board() && col >= 0 &&
 		(board->get_cell(row, col) == ' ' || board->get_cell(row, col) == 'F' ||
 			board->get_cell(row, col) == 'X' ||
-			(board->get_cell(row, col) == '#' && keys > 0)))
+			(board->get_cell(row, col) == '#' && has_key)))
 		return true;
 	else
 		return false;

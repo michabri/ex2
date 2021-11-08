@@ -18,9 +18,8 @@ public:
 	bool move_mage(Board* board);
 	bool move_warrior(Board* board);
 	bool move_thief(Board* board);
-	int get_key_counter() const;
 	void find_next_teleport(const Board* board, int &row, int &col) const;
-
+	bool get_has_key() const;
 private:
 	King m_king;
 	Mage m_mage;
@@ -28,7 +27,6 @@ private:
 	Thief m_thief;
 	CheckValid m_check_valid;
 
-	int m_key_counter;
 	bool m_player_on_key[4]; // 0 - king, 1 - mage, 2 - warrior, 3 - thief
 	bool m_player_on_teleport[4];
 };

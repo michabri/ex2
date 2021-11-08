@@ -20,8 +20,7 @@ using std::cin;
 
 //-------------------------------------------------------------
 Controller::Controller()
-	:m_player_on_key{ false }, m_player_on_teleport{ false },
-	m_key_counter(0)
+	:m_player_on_key{ false }, m_player_on_teleport{ false }
 {}
 //-------------------------------------------------------------------
 bool Controller::move_player(Board* board, const char player, bool& victory)
@@ -184,12 +183,16 @@ bool Controller::move_thief(Board* board)
 	old_col = new_col = m_thief.get_col();
 
 	new_coordinate(new_row, new_col);
-	if (!m_check_valid.check_valid_thief(new_row, new_col, board, m_key_counter))
+	if (!m_check_valid.check_valid_thief(new_row, new_col, board, m_thief.get_has_key()))
 		return false;
 
 	m_thief.set_coordinate(new_row, new_col);
-
-	if (m_player_on_teleport[thief])
+	if (m_player_on_key[thief] && m_thief.get_has_key())
+	{
+		board->set_cell(old_row, old_col, 'F');
+		m_player_on_key[thief] = false;
+	}
+	else if (m_player_on_teleport[thief])
 	{
 		board->set_cell(old_row, old_col, 'X');
 		m_player_on_teleport[thief] = false;
@@ -198,9 +201,14 @@ bool Controller::move_thief(Board* board)
 		board->set_cell(old_row, old_col, ' ');
 
 	if (board->get_cell(new_row, new_col) == 'F')
-		m_key_counter++;
-	else if (board->get_cell(new_row, new_col) == '#')
-		m_key_counter--;
+	{
+		if (!m_thief.get_has_key())
+			m_thief.set_has_key();
+		else
+			m_player_on_key[thief] = true;
+	}
+	else if (board->get_cell(new_row, new_col) == '#' && m_thief.get_has_key())
+		m_thief.set_has_key();
 	else if (board->get_cell(new_row, new_col) == 'X')
 	{
 		m_player_on_teleport[thief] = true;
@@ -275,7 +283,8 @@ void Controller::find_next_teleport(const Board* board, int &row, int &col) cons
 			start = true;
 	}
 }
-int Controller::get_key_counter() const
+//-------------------------------------------------------------
+bool Controller::get_has_key() const
 {
-	return m_key_counter;
+	return m_thief.get_has_key();
 }
