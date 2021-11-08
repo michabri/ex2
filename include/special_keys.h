@@ -20,5 +20,4 @@ enum SpecialKeys
     KB_Right = 77,
 };
 
-//void handleSpecialKey();
 bool handleRegularKey(int c);

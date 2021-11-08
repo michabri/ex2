@@ -9,6 +9,7 @@
 
 #include "io.h"
 #include "board.h"
+#include "controller.h"
 #include "game.h"
 #include "special_keys.h"
 
@@ -23,22 +24,23 @@ using std::ofstream;
 
 void game()
 {
-    char file_name[LENGTH];
-    char level_file[LENGTH];
+    char levels_names[LENGTH]; //the name of the file that contains the names of the levels
+    char level_file[LENGTH];   //the name of the file level
     
-    cin >> file_name;
+    cin >> levels_names;
 
     ifstream in;
-    in.open(file_name);
+    in.open(levels_names);
     if (!in.is_open())
     {
-        cerr << "could not open the file -" << file_name << endl;
+        cerr << "could not open the file -" << levels_names << endl;
         exit(EXIT_FAILURE);
     }
 
-    char player , enter;
-    int counter = 0;
-    int key = 0;
+    Controller controller; // the class that moves the players
+    char player , enter;   // player(king, mage, warrior or thief), enter key for moving to the next round
+    int counter_moves = 0;       
+    int counter_keys = 0;           
     bool victory = false;
     auto exit = false;
 
@@ -46,7 +48,7 @@ void game()
     {
         in.getline(level_file, LENGTH);
 
-        Board board(level_file);
+        Board board(level_file, &controller);
         victory = false;
         int index_player = 0;
         
@@ -59,7 +61,7 @@ void game()
                 index_player = 0;
             
             std::system("cls");
-            board.print_board(player, counter, key);
+            board.print_board(player, counter_moves, counter_keys);
 
             auto input = _getch();
             
@@ -70,15 +72,15 @@ void game()
                 switch (input)
                 {
                 case SpecialKey:
-                    if (board.move_player(player, victory))
-                        counter++;
+                    if (controller.move_player(&board, player, victory))
+                        counter_moves++;
                     break;
                 default:
                     exit = handleRegularKey(input);
                 }
                 if (!victory)
                 {
-                    board.print_board(player, counter, board.get_key_counter());
+                    board.print_board(player, counter_moves, controller.get_key_counter());
                     input = _getch();
                     
                     std::system("cls");
@@ -87,7 +89,7 @@ void game()
         }
         if (victory)
         {
-            board.print_victory();
+            print_victory();
             cout << "you passed level " << i + 1 << "! \n";
             cout << "ready for next level?\n" << "press enter\n";
             enter = _getch();
@@ -96,7 +98,7 @@ void game()
     if (!exit)
         cout << "you passed all the levels! congratulations" << endl;
     else
-        cout << "you dumb shit you didnt passed the game" << endl;
+        cout << "you dumb shit you didnt pass the game" << endl;
     in.close();
 }
 
@@ -110,4 +112,13 @@ char get_player(int index)
     case warrior: return 'w';
     case thief: return 't';
     }
+}
+//-------------------------------------------------------------------
+void print_victory()
+{
+    cout << "*       * ***** ***** ***** ***** ***** *   * " << endl;
+    cout << " *     *    *   *       *   *   * *   *  * *" << endl;
+    cout << "  *   *     *   *       *   *   * *****   *" << endl;
+    cout << "   * *      *   *       *   *   * * *     *" << endl;
+    cout << "    *     ***** *****   *   ***** *   *   *" << endl;
 }

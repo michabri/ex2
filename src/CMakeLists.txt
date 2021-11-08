@@ -7,4 +7,5 @@
 											   "mage.cpp"
 											   "warrior.cpp"
 											   "thief.cpp"
-											   "game.cpp")
+											   "game.cpp"
+											   "checkValid.cpp")
