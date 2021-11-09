@@ -7,8 +7,6 @@
 #include <cstring>
 #include <conio.h>
 
-
-#include "io.h"
 #include "board.h"
 #include "controller.h"
 #include "game.h"
@@ -89,16 +87,20 @@ void game()
         }
         if (victory)
         {
-            print_victory();
+            print_congratulations();
             cout << "you passed level " << i + 1 << "! \n";
             cout << "ready for next level?\n" << "press enter\n";
             enter =(char) _getch();
         }
     }
+    std::system("cls");
     if (!exit)
+    {
+        print_victory();
         cout << "you passed all the levels! congratulations" << endl;
+    }
     else
-        cout << "you dumb shit you didnt pass the game" << endl;
+        cout << "you loser didnt pass the game" << endl;
     in.close();
 }
 
@@ -113,6 +115,15 @@ char get_player(int index)
     case thief: return 't';
     }
     return ' ';
+}
+//-------------------------------------------------------------------
+void print_congratulations()
+{
+    cout << "***** ***** *    * ***** ***** ***** ***** *   * *     ***** ***** ***** ***** *   * *****" << endl;
+    cout << "*     *   * **   * *     *   * *   *   *   *   * *     *   *   *     *   *   * **  * *" << endl;
+    cout << "*     *   * * *  * ***** ***** *****   *   *   * *     *****   *     *   *   * * * * *****" << endl;
+    cout << "*     *   * *   ** *   * * *   *   *   *   *   * *     *   *   *     *   *   * *  **     *" << endl;
+    cout << "***** ***** *    * ***** *   * *   *   *   ***** ***** *   *   *   ***** ***** *   * *****" << endl;
 }
 //-------------------------------------------------------------------
 void print_victory()

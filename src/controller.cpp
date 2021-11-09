@@ -1,7 +1,6 @@
 #include <iostream>
 #include <conio.h>
 
-#include "io.h"
 #include "board.h"
 #include "king.h"
 #include "mage.h"
