@@ -30,7 +30,7 @@ void game()
 
     ifstream in;
     in.open(levels_names);
-    if (!in.is_open())
+    if (!in.is_open())  //open the files
     {
         cerr << "could not open the file -" << levels_names << endl;
         exit(EXIT_FAILURE);
@@ -42,14 +42,16 @@ void game()
     bool victory = false;
     auto exit = false;
 
+    //read the name of the level
     for (int i = 0;  !exit && !in.eof(); i++)
     {
         in.getline(level_file, LENGTH);
 
-        Board board(level_file, &controller);
+        Board board(level_file, &controller);   //create a board according to the level
         victory = false;
         int index_player = 0;
         
+        //as long as the player didnt win\exit the game
         while (!victory && !exit)
         {
             player = get_player(index_player);
@@ -59,6 +61,7 @@ void game()
                 index_player = 0;
             
             std::system("cls");
+            //print the current player, how many moves were made, and if the thief has a key
             board.print_board(player, counter_moves, controller.get_has_key());
 
             auto input = _getch();
@@ -66,7 +69,7 @@ void game()
             std::system("cls");
 
             while (input != 'p' && !exit && !victory)
-            {
+            {//move the player according to the users input
                 switch (input)
                 {
                 case SpecialKey:
@@ -86,7 +89,7 @@ void game()
             }
         }
         if (victory)
-        {
+        {   //print VICTORY if the player finished the level
             print_congratulations();
             cout << "you passed level " << i + 1 << "! \n";
             cout << "ready for next level?\n" << "press enter\n";
@@ -104,7 +107,9 @@ void game()
     in.close();
 }
 
-//--------------------------------------------------------------
+//-------------------------------------------------------------------
+
+//return the player
 char get_player(int index)
 {
     switch (index)
@@ -117,6 +122,8 @@ char get_player(int index)
     return ' ';
 }
 //-------------------------------------------------------------------
+
+//print the CONGRATULATIONS announcement
 void print_congratulations()
 {
     cout << "***** ***** *    * ***** ***** ***** ***** *   * *     ***** ***** ***** ***** *   * *****" << endl;
@@ -126,6 +133,8 @@ void print_congratulations()
     cout << "***** ***** *    * ***** *   * *   *   *   ***** ***** *   *   *   ***** ***** *   * *****" << endl;
 }
 //-------------------------------------------------------------------
+
+//print the VICTORY announcement
 void print_victory()
 {
     cout << "*       * ***** ***** ***** ***** ***** *   * " << endl;

@@ -5,6 +5,8 @@
 using std::cout;
 
 //---------------------------------------------------------------------
+
+//functin to handle the escape key (EXIT)
 bool handleRegularKey(int c)
 {
     switch (c)

@@ -24,7 +24,7 @@ Board::Board()
 Board::Board(const char* file_name, Controller *controller)
 {
 	ifstream in;
-	in.open(file_name);
+	in.open(file_name);	//open the file
 	if (!in.is_open())
 	{
 		cerr <<"could not open the file -" << file_name  << endl;
@@ -32,7 +32,7 @@ Board::Board(const char* file_name, Controller *controller)
 	}
 	
 	int row = 0, col = 0;
-	
+	//read the map from the .txt file
 	do {
 		col = 0;
 		do {
@@ -42,7 +42,7 @@ Board::Board(const char* file_name, Controller *controller)
 				in.get();
 				break;
 			}
-			
+			//initialize the players
 			controller->initialize_players(m_board[row][col], row, col);
 			
 			col++;
@@ -50,7 +50,7 @@ Board::Board(const char* file_name, Controller *controller)
 		while (m_board[row][col - 1] != '\n' &&
 			m_board[row][col - 1] != '\0' &&
 			col < LENGTH);
-		
+		//checks if the board is too big
 		if (col == LENGTH)
 		{
 			cerr << "The board is too big" << endl;
@@ -74,8 +74,10 @@ Board::Board(const char* file_name, Controller *controller)
 	in.close();
 }
 //--------------------------------------------------------------
+
+//this function prints the board
 void Board::print_board(char player, int counter, bool key)
-{
+{//prints the current player, the steps, and if the thief has a key
 	cout << "The palyer is: " << player << endl;
 	cout << "The amount of steps: " << counter << endl;
 	if (key)
@@ -94,22 +96,30 @@ void Board::print_board(char player, int counter, bool key)
 }
 
 //-------------------------------------------------------------------
+
+//this function returns the current cell (char)
 char Board::get_cell(int row, int col) const
 {
 	return m_board[row][col];
 }
 //-------------------------------------------------------------------
+
+//this function sets the cells coordinates
 void Board::set_cell(const int row, const int col, const char c) 
 {
 	m_board[row][col] = c;
 }
 
 //-------------------------------------------------------------------
+
+//this function returns the row
 int Board::get_row_board() const
 {
 	return m_length_row;
 }
 //-------------------------------------------------------------------
+
+//this function returns the column
 int Board::get_col_board() const
 {
 	return m_length_col;
