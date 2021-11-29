@@ -1,0 +1,9 @@
+C:/Users/shlom/Documents/GitHub/ex3/out/build/windows-default/CMakeFiles/oop1_ex02.dir
+C:/Users/shlom/Documents/GitHub/ex3/out/build/windows-default/CMakeFiles/edit_cache.dir
+C:/Users/shlom/Documents/GitHub/ex3/out/build/windows-default/CMakeFiles/rebuild_cache.dir
+C:/Users/shlom/Documents/GitHub/ex3/out/build/windows-default/include/CMakeFiles/edit_cache.dir
+C:/Users/shlom/Documents/GitHub/ex3/out/build/windows-default/include/CMakeFiles/rebuild_cache.dir
+C:/Users/shlom/Documents/GitHub/ex3/out/build/windows-default/src/CMakeFiles/edit_cache.dir
+C:/Users/shlom/Documents/GitHub/ex3/out/build/windows-default/src/CMakeFiles/rebuild_cache.dir
+C:/Users/shlom/Documents/GitHub/ex3/out/build/windows-default/resources/CMakeFiles/edit_cache.dir
+C:/Users/shlom/Documents/GitHub/ex3/out/build/windows-default/resources/CMakeFiles/rebuild_cache.dir
