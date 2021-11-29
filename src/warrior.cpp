@@ -8,27 +8,25 @@
 
 //sets the warriors default coordinates
 Warrior::Warrior()
-	:m_row(0), m_col(0)
+	:m_loc(0,0)
 {}
 //-------------------------------------------------------------
-
 //sets the warriors given coordinates
-void Warrior::set_coordinate(const int row, const int col)
+void Warrior::setLocation(const Location loc)
 {
-	m_row = row;
-	m_col = col;
+	m_loc = loc;
+}
+
+//-------------------------------------------------------------
+Location Warrior::getLocation() const
+{
+	return m_loc;
 }
 //-------------------------------------------------------------
-
-//returns the warriors row
-int Warrior::get_row() const
+bool Warrior::checkValidMove(const char c) const
 {
-	return m_row;
-}
-//-------------------------------------------------------------
-
-//returns the warriors column
-int Warrior::get_col() const
-{
-	return m_col;
+	if (c == ' ' || c == '!' || c == 'F' || c == 'X')
+		return true;
+	else
+		return false;
 }

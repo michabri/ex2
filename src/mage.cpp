@@ -8,27 +8,26 @@
 
 //sets the mages dafault coordinates
 Mage::Mage()
-	:m_row(0), m_col(0)
+	:m_loc(0,0)
 {}
 //-------------------------------------------------------------
 
 //sets the mages given coordinates
-void Mage::set_coordinate(const int row, const int col)
+void Mage::setLocation(const Location loc)
 {
-	m_row = row;
-	m_col = col;
+	m_loc = loc;
 }
 //-------------------------------------------------------------
 
-//returns the mages row
-int Mage::get_row() const
+Location Mage::getLocation() const
 {
-	return m_row;
+	return m_loc;
 }
 //-------------------------------------------------------------
-
-//returns the mages column
-int Mage::get_col() const
+bool Mage::checkValidMove(const char c) const
 {
-	return m_col;
+	if (c == ' ' || c == '*' || c == 'F' || c == 'X')
+		return true;
+	else
+		return false;
 }

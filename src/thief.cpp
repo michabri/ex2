@@ -8,41 +8,41 @@
 
 //set the thiefs default coordinates
 Thief::Thief()
-	:m_row(0), m_col(0), m_has_key(false)
+	:m_loc(0,0), m_has_key(false)
 {}
 //-------------------------------------------------------------
 
 //sets the thiefs given coordinates
-void Thief::set_coordinate(const int row, const int col)
+void Thief::setLocation(const Location loc)
 {
-	m_row = row;
-	m_col = col;
+	m_loc = loc;
 }
 //-------------------------------------------------------------
-
-//returns the thiefs row
-int Thief::get_row() const
+Location Thief::getLocation() const
 {
-	return m_row;
+	return m_loc;
 }
 //-------------------------------------------------------------
-
-//returns the thiefs column
-int Thief::get_col() const
-{
-	return m_col;
-}
-//-------------------------------------------------------------
-
 //set if the thief has a key or not
-void Thief::set_has_key()
+void Thief::setKey()
 {
 	m_has_key = !m_has_key;
 }
 //-------------------------------------------------------------
-
 //returns if the player has a key or not
-bool Thief::get_has_key() const
+bool Thief::getHasKey() const
 {
 	return m_has_key;
+}
+//-------------------------------------------------------------
+bool Thief::checkValidMove(const char c)
+{
+	if (c == ' ' || c == 'F' || c == 'X' || (c == '#' && m_has_key))
+	{
+		if ((c == '#' && m_has_key))
+			m_has_key = false;
+		return true;
+	}
+	else
+		return false;
 }

@@ -1,12 +1,14 @@
 #pragma once
+#include "Location.h"
+#include "io.h"
+
 
 class Mage {
 public:
 	Mage();
-	void set_coordinate(const int row, const int col);
-	int get_row() const;
-	int get_col() const;
+	void setLocation(const Location loc);
+	Location getLocation() const;
+	bool checkValidMove(const char c) const;
 private:
-	int m_row;
-	int m_col;
+	Location m_loc;
 };

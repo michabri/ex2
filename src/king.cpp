@@ -8,27 +8,24 @@
 
 //set the kings default coordinates
 King::King()
-	:m_row(0), m_col(0)
+	:m_loc(0,0)
 {}
 //-------------------------------------------------------------
-
 //set the kings given coordinates
-void King::set_coordinate(const int row, const int col)
+void King::setLocation(const Location loc)
 {
-	m_row = row;
-	m_col = col;	
+	m_loc = loc;
 }
 //-------------------------------------------------------------
-
-//get the kings row
-int King::get_row() const
+Location King::getLocation() const
 {
-	return m_row;
+	return m_loc;
 }
 //-------------------------------------------------------------
-
-//get the kings column
-int King::get_col() const
+bool King::checkValidMove(const char c)
 {
-	return m_col;
+	if (c == ' ' || c == '@' || c == 'F' || c == 'X')
+		return true;
+	else
+		return false;
 }

@@ -1,12 +1,11 @@
-﻿#include <iostream>
-
-#include "game.h"
-
+﻿#include "Controller.h"
 
 int main()
 {
-    //summons the game function
-    game();
-    
-    exit(EXIT_SUCCESS);
+    Controller c;
+    c.game();
+
+    return EXIT_SUCCESS; 
 }
+
+

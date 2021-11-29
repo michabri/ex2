@@ -1,12 +1,12 @@
 #pragma once
-#include "special_keys.h"
-#include "King.h"
-#include "mage.h"
-#include "warrior.h"
-#include "thief.h"
-#include "Controller.h"
+#include <string>
+#include <vector>
+#include "io.h"
+
+using std::vector;
+using std::string;
+
 //-------------const section-------------------
-const int LENGTH = 50;
 
 //------------class declaration-----------------
 
@@ -14,16 +14,20 @@ class Board
 {
 public:
 	Board();
-	Board(const char *file_name, Controller *controler);
-	void print_board(char player, int counter, bool key);
-	char get_cell(int row, int col) const;
-	void set_cell(const int row, const int col, const char c);
-	int get_row_board() const;
-	int get_col_board() const;
-	
+	void setBoard(std::string file_level);
+	void printBoard(char player, int counter, bool key);
+	char getCell(const Location loc) const;
+	void setCell(const Location loc, const char c);
+	int getRowBoard() const;
+	int getColBoard() const;
+	void initialzieTeleports(const int i, string line);
+	void findNextTeleport(Location& loc) const;
+	bool checkOutOfBoard(Location loc) const;
+	void clearBoard();
 
 private:
-	char m_board[LENGTH][LENGTH] ;
-	int m_length_row;
-	int m_length_col;
+	vector<string> m_board;
+	vector <Location> m_teleports;
+	int m_row_length;
+	int m_col_length;
 };

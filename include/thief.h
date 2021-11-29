@@ -1,16 +1,16 @@
 #pragma once
+#include "Location.h"
 
 class Thief {
 public:
 	Thief();
-	void set_coordinate(const int row, const int col);
-	int get_row() const;
-	int get_col() const;
-	void set_has_key();
-	bool get_has_key() const;
+	Location getLocation() const;
+	void setLocation(const Location loc);
+	void setKey();
+	bool getHasKey() const;
+	bool checkValidMove(const char c);
 private:
-	int m_row;
-	int m_col;
+	Location m_loc;
 	bool m_has_key;
 };
 

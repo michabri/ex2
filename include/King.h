@@ -1,12 +1,12 @@
 #pragma once
+#include "Location.h"
 
 class King {
 public:
 	King();
-	void set_coordinate(const int row, const int col);
-	int get_row() const;
-	int get_col() const;
+	Location getLocation() const;
+	void setLocation(const Location loc);
+	bool checkValidMove(const char c);
 private:
-	int m_row ;
-	int m_col ;
+	Location m_loc;
 };
