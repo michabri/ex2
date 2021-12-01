@@ -6,4 +6,8 @@
 											  "Warrior.cpp"
 											  "Board.cpp"
 											  "SpecialKeys.cpp"
-											  "Controller.cpp")
+											  "Controller.cpp"
+											  "OpenWindow.cpp"
+											  "MenuBar.cpp"
+											  "BoardSfml.cpp"
+											  "Cell.cpp")

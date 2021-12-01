@@ -35,7 +35,7 @@ void Controller::game()
     auto level_names = std::string(); //the name of the file that contains the names of the levels
     auto level_file = std::string(); //the name of the file level
     level_names = "levels.txt";
-
+    
     ifstream in;
     in.open(level_names);
     if (!in.is_open())  //open the files
@@ -81,7 +81,6 @@ void Controller::game()
                 {
                     m_board.printBoard(character, counter_moves, m_thief.getHasKey());
                     input = _getch();
-
                     std::system("cls");
                 }
             }
@@ -94,13 +93,16 @@ void Controller::game()
             m_board.clearBoard();
             if (m_thief.getHasKey())
                 m_thief.setKey();
+            for (int i = 0; i < CHARACTERS; i++)
+            {
+                m_player_on_key[i] = false;
+                m_player_on_teleport[i] = false;
+            }
         }
     }
     std::system("cls");
     if (!exit)
-    {
         cout << "you passed all the levels! congratulations" << endl;
-    }
     else
         cout << "you loser, you didnt pass the game" << endl;
 }
